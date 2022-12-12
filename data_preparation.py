@@ -33,6 +33,22 @@ def remove_unwanted_text(text):
 
     return pos
 
+
+
+def convert_upper_case_to_title(txt):
+    ########### convert the uppercase words to title case for catching names in NER
+    title_tokens =  []
+    for token in txt.split(' '):
+        title_subtokens = []
+        for subtoken in token.split('\n'):
+            if subtoken.isupper():
+                title_subtokens.append(subtoken.title())
+            else:
+                title_subtokens.append(subtoken)
+        title_tokens.append('\n'.join(title_subtokens))
+    title_txt = ' '.join(title_tokens)
+    return title_txt
+
 def get_keyword_based_preamble_end_char_offset(text):
     preamble_end_keywords = ["JUDGMENT","ORDER","J U D G M E N T","O R D E R","JUDGMENT & ORDER","COMMON ORDER","ORAL JUDGMENT"]
     preamble_end_char_offset = 0
@@ -53,19 +69,6 @@ def get_keyword_based_preamble_end_char_offset(text):
                 break
     return preamble_end_char_offset
 
-def convert_upper_case_to_title(txt):
-    ########### convert the uppercase words to title case for catching names in NER
-    title_tokens =  []
-    for token in txt.split(' '):
-        title_subtokens = []
-        for subtoken in token.split('\n'):
-            if subtoken.isupper():
-                title_subtokens.append(subtoken.title())
-            else:
-                title_subtokens.append(subtoken)
-        title_tokens.append('\n'.join(title_subtokens))
-    title_txt = ' '.join(title_tokens)
-    return title_txt
 
 def guess_preamble_end(truncated_txt, nlp):
     ######### Guess the end of preamble using hueristics
